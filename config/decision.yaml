@@ -1,0 +1,69 @@
+# =========================
+# INPUT SIGNAL SELECTION
+# =========================
+
+# Enable audio-based drone detection (primary signal)
+# If set to false, all audio_detection events are ignored
+use_audio: true
+
+# Enable localization / direction information (bearing, angle)
+# Provides contextual information (where the drone is coming from)
+# Does NOT trigger alerts by itself
+use_localization: true
+
+# Enable video-based detection (optional computer vision signal)
+# If false, video_detection events are ignored
+use_video: false
+
+# Enable human interaction input (button, UI action, voice-to-action)
+# Raw speech recognition is out of scope;
+# this flag only controls whether human confirmation events are used
+use_human: false
+
+
+# =========================
+# AUDIO DECISION LOGIC
+# =========================
+
+audio:
+  # High-confidence threshold for audio detection
+  # If the detector outputs p_drone >= T_high,
+  # the system considers the drone presence confirmed
+  # Value range: [0.0, 1.0]
+  T_high: 0.85
+
+
+# =========================
+# ALERT CONFIGURATION
+# =========================
+
+alert:
+  # Allowed alert modalities
+  # These define WHAT types of alerts may be emitted,
+  # not HOW they are implemented on a specific device
+  enabled_types:
+    - vibration   # vibration alert (phone, wearable, portable device)
+    - sound       # audio signal (beep, alarm tone)
+    - voice       # spoken message (e.g. "Drone detected")
+
+  # Optional priority order for alert delivery
+  # Higher-priority alert types may be triggered first
+  priority:
+    - vibration
+    - sound
+    - voice
+
+
+# =========================
+# ALERT RATE CONTROL
+# =========================
+
+# Cooldown period after an alert is triggered (in seconds)
+# During this interval, additional alerts are suppressed
+# even if detection conditions remain true
+#
+# Purpose:
+# - prevent alert spamming
+# - reduce cognitive overload
+# - improve usability in real-world conditions
+cooldown_seconds: 10

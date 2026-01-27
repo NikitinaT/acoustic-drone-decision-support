@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Acoustic Event Schema",
+  "description": "Schema for pre-processed acoustic detector outputs (no raw audio). One JSON object per line (JSONL).",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Time when the acoustic event applies."
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Identifier of the session/run this event belongs to."
+    },
+    "event_type": {
+      "type": "string",
+      "description": "Type of acoustic event produced by the upstream detector (e.g., 'audio_drone_event', 'weather_estimate')."
+    },
+    "p_drone": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Probability of drone presence reported by the acoustic detector."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Detector confidence score for this event (if provided)."
+    },
+    "drone_detected": {
+      "type": "boolean",
+      "description": "Optional boolean classification if the upstream detector outputs a hard decision."
+    },
+    "proximity": {
+      "type": "string",
+      "enum": ["UNKNOWN", "FAR", "MID", "CLOSE"],
+      "description": "Optional coarse distance category inferred from acoustics."
+    },
+    "eta_seconds": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Optional time-to-object estimate in seconds (seconds until drone reaches the device)."
+    },
+    "bearing_deg": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 360.0,
+      "description": "Optional estimated bearing to the source in degrees."
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional environment estimates derived from acoustics (e.g., weather-related noise signatures).",
+      "properties": {
+        "weather_condition": {
+          "type": "string",
+          "enum": ["UNKNOWN", "CLEAR", "RAIN", "WIND", "THUNDER", "SNOW", "FOG", "OTHER"],
+          "description": "Coarse weather condition estimate."
+        },
+        "weather_confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Confidence for weather_condition."
+        }
+      },
+      "required": []
+    },
+    "raw_notes": {
+      "type": "string",
+      "description": "Optional debugging notes from upstream detector; must not be used for decision logic."
+    }
+  },
+  "required": ["timestamp", "session_id", "event_type"]
+}

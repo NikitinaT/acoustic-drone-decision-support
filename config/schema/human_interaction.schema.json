@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Human Interaction Schema",
+  "description": "Schema for minimal, structured human-provided context cues (no object identification; privacy-preserving).",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp when the interaction was recorded."
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Deprecated alias of timestamp (kept for compatibility)."
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Optional session identifier if the interaction is tied to a session."
+    },
+    "source": {
+      "type": "string",
+      "const": "human_interaction",
+      "description": "Event source identifier."
+    },
+    "input_mode": {
+      "type": "string",
+      "enum": ["speech", "text", "button_press"],
+      "description": "How the interaction was provided."
+    },
+    "reported_by": {
+      "type": "string",
+      "description": "Optional identifier of the human reporter (can be pseudonymous)."
+    },
+    "space": {
+      "type": "string",
+      "enum": ["inside", "outside", "open_area", "forest", "near_buildings"],
+      "description": "Coarse spatial context."
+    },
+    "mobility": {
+      "type": "string",
+      "enum": ["stationary", "on_foot", "in_vehicle"],
+      "description": "Coarse mobility context."
+    },
+    "environment": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["wind", "traffic_noise", "quiet", "urban_noise"]
+      },
+      "uniqueItems": true,
+      "description": "Set of coarse environment cues (order not significant)."
+    },
+    "visual_hint": {
+      "type": "boolean",
+      "description": "Whether the human has visual contact with an unidentified object, without classification."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Human-provided confidence score for this interaction."
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional privacy guarantees asserted by the UI/device for this record.",
+      "properties": {
+        "no_audio_content": { "type": "boolean" },
+        "no_image_data": { "type": "boolean" },
+        "no_object_labeling": { "type": "boolean" }
+      },
+      "required": []
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional free-text note; must not be used as a decision signal."
+    },
+
+    "confidence_level": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH"],
+      "description": "Deprecated legacy field (use confidence)."
+    }
+  },
+  "required": ["source", "input_mode", "space", "mobility", "environment", "visual_hint", "confidence"],
+  "anyOf": [
+    { "required": ["timestamp"] },
+    { "required": ["timestamp_utc"] }
+  ]
+}

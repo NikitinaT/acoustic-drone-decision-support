@@ -1,0 +1,11 @@
+{
+  "session_id": "session_20260126_211300Z__F__005",
+  "created_utc": "2026-01-26T21:13:00Z",
+  "variant": "F",
+  "enabled_modalities": {
+    "acoustic": true,
+    "human_interaction": true,
+    "video": false
+  },
+  "notes": "Synthetic session with human interaction (speech) using dictionary terms."
+}

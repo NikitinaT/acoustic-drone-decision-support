@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Decision Output Schema",
+  "description": "Schema for structured outputs produced by the decision engine after processing detector events.",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp when the decision was produced."
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Optional session identifier for alignment with input sessions."
+    },
+    "decision_state": {
+      "type": "string",
+      "enum": ["IDLE", "ALERT", "COOLDOWN"],
+      "description": "High-level state of the decision engine at this time."
+    },
+    "p_drone": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Fused probability of target presence derived from available inputs (acoustic required; optional modalities may refine)."
+    },
+    "confidence_level": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH"],
+      "description": "Discretized confidence level derived from p_drone thresholds."
+    },
+    "alert_triggered": {
+      "type": "boolean",
+      "description": "Indicates whether an alert was triggered for this decision."
+    },
+    "alert_types": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["vibration", "sound", "voice"] },
+      "description": "Types of alert modalities requested by the decision engine."
+    },
+    "proximity": {
+      "type": "string",
+      "enum": ["UNKNOWN", "FAR", "CLOSE"],
+      "description": "Optional fused proximity category."
+    },
+    "eta_seconds": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Optional fused time-to-object estimate in seconds."
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional fused environment estimates.",
+      "properties": {
+        "weather_condition": {
+          "type": "string",
+          "enum": ["UNKNOWN", "CLEAR", "RAIN", "WIND", "THUNDER", "SNOW", "FOG", "OTHER"]
+        },
+        "weather_confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      },
+      "required": []
+    },
+    "direction": {
+      "type": "object",
+      "description": "Optional localization output if direction estimation is enabled.",
+      "properties": {
+        "azimuth_deg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 360,
+          "description": "Estimated horizontal bearing in degrees."
+        },
+        "elevation_deg": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90,
+          "description": "Estimated vertical angle of arrival in degrees."
+        }
+      },
+      "required": ["azimuth_deg"]
+    },
+    "distance_estimate": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Optional rough distance estimate based on signal strength or attenuation."
+    },
+    "human_interaction_required": {
+      "type": "boolean",
+      "description": "Indicates whether human confirmation or interaction is requested."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-form text for debugging or experimental annotations."
+    }
+  },
+  "required": ["timestamp", "decision_state", "p_drone", "confidence_level", "alert_triggered"],
+  "additionalProperties": false
+}

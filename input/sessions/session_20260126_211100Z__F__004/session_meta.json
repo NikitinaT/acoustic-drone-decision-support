@@ -1,0 +1,11 @@
+{
+  "session_id": "session_20260126_211100Z__F__004",
+  "created_utc": "2026-01-26T21:11:00Z",
+  "variant": "F",
+  "enabled_modalities": {
+    "acoustic": true,
+    "human_interaction": true,
+    "video": true
+  },
+  "notes": "Synthetic session for schema validation and replay tests."
+}

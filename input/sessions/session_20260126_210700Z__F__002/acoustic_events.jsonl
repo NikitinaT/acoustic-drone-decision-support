@@ -1,0 +1,5 @@
+{"timestamp": "2026-01-26T21:07:00Z", "session_id": "session_20260126_210700Z__F__002", "event_type": "audio_drone_event", "p_drone": 0.2, "confidence": 0.6, "proximity": "FAR", "eta_seconds": 60, "bearing_deg": 120.0}
+{"timestamp": "2026-01-26T21:07:10Z", "session_id": "session_20260126_210700Z__F__002", "event_type": "audio_drone_event", "p_drone": 0.45, "confidence": 0.7, "proximity": "FAR", "eta_seconds": 45, "bearing_deg": 120.0}
+{"timestamp": "2026-01-26T21:07:20Z", "session_id": "session_20260126_210700Z__F__002", "event_type": "audio_drone_event", "p_drone": 0.7, "confidence": 0.8, "proximity": "MID", "eta_seconds": 30, "bearing_deg": 120.0}
+{"timestamp": "2026-01-26T21:07:30Z", "session_id": "session_20260126_210700Z__F__002", "event_type": "audio_drone_event", "p_drone": 0.95, "confidence": 0.9, "proximity": "CLOSE", "eta_seconds": 15, "bearing_deg": 120.0}
+{"timestamp": "2026-01-26T21:07:05Z", "session_id": "session_20260126_210700Z__F__002", "event_type": "weather_estimate", "confidence": 0.8, "environment": {"weather_condition": "WIND", "weather_confidence": 0.8}}
