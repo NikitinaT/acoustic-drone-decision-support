@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/v1-baseline/mason_acoustic_event.schema.json",
+  "title": "Mason Acoustic Event Annotation (Segment-based)",
+  "description": "Schema for segment-based acoustic event annotations as shared by Mason. Each record describes a labeled time interval within a recording/session. This is an annotation/detection output format (not raw audio).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "session_id",
+    "event_type",
+    "start_time",
+    "end_time",
+    "environment",
+    "approaching"
+  ],
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Recording/session identifier (e.g., filename or run id)."
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "no_drones",
+        "audio_drone_event"
+      ],
+      "description": "Type of labeled segment."
+    },
+    "start_time": {
+      "type": "string",
+      "pattern": "^\\d{2}:\\d{2}\\.\\d$",
+      "description": "Segment start time as mm:ss.d (minutes:seconds.tenths)."
+    },
+    "end_time": {
+      "type": "string",
+      "pattern": "^\\d{2}:\\d{2}\\.\\d$",
+      "description": "Segment end time as mm:ss.d (minutes:seconds.tenths). Must be >= start_time (validated in code, not JSON Schema)."
+    },
+    "toy_drone": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "close",
+        "mid",
+        "far",
+        null
+      ],
+      "description": "Optional qualitative proximity for toy_drone during this segment."
+    },
+    "mini_tello_drone1": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "close",
+        "mid",
+        "far",
+        null
+      ],
+      "description": "Optional qualitative proximity for mini_tello_drone1 during this segment."
+    },
+    "mini_tello_drone2": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "close",
+        "mid",
+        "far",
+        null
+      ],
+      "description": "Optional qualitative proximity for mini_tello_drone2 during this segment."
+    },
+    "terrifying_drone": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "close",
+        "mid",
+        "far",
+        null
+      ],
+      "description": "Optional qualitative proximity for terrifying_drone during this segment."
+    },
+    "approaching": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no",
+        "unclear",
+        "n/a"
+      ],
+      "description": "Whether the drone is approaching in this segment. Use 'n/a' for no_drones segments."
+    },
+    "environment": {
+      "type": "string",
+      "enum": [
+        "indoor",
+        "outdoor",
+        "unknown"
+      ],
+      "description": "Coarse environment label."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "no_drones"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "approaching": {
+            "const": "n/a"
+          }
+        }
+      }
+    }
+  ]
+}
